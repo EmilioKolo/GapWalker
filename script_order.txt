@@ -1,0 +1,43 @@
+# 1. Align and extract reads that align to one or both anchors
+python cli_extract_reads.py \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3511.fastq.gz \
+    -t 4 -o ./input/3511
+python cli_extract_reads.py \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3512.fastq.gz \
+    -t 4 -o ./input/3512
+python cli_extract_reads.py \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3567.fastq.gz \
+    -t 4 -o ./input/3567
+python cli_extract_reads.py \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3569.fastq.gz \
+    -t 4 -o ./input/3569
+
+# 2. Align the extracted reads to both anchors and visualize them
+python cli_align_reads_to_anchors.py \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./input/3511_anchor1.other.fastq \
+    -o ./output/3511_alignments/read
+python cli_align_reads_to_anchors.py \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./input/3512_anchor1.other.fastq \
+    -o ./output/3512_alignments/read
+python cli_align_reads_to_anchors.py \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./input/3567_anchor1.other.fastq \
+    -o ./output/3567_alignments/read
+python cli_align_reads_to_anchors.py \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./input/3569_anchor1.other.fastq \
+    -o ./output/3569_alignments/read
