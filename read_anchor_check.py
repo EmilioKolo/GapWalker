@@ -471,6 +471,113 @@ def _write_plot(
 
 # Entry points
 
+def check_sequence_presence(
+    fasta_query: str,
+    fasta_target: str,
+    label_query: Optional[str] = None,
+    label_target: Optional[str] = None,
+    match_score: float = 2.0,
+    mismatch_score: float = -1.0,
+    gap_open: float = -10.0,
+    gap_extend: float = -0.5,
+    min_identity: float = 90.0,
+    min_coverage: float = 80.0,
+) -> dict:
+    """
+    Evaluate whether a short query sequence is present within a longer target
+    sequence, both supplied as single-record FASTA files.
+
+    Uses local pairwise alignment (Smith-Waterman via BioPython). The query
+    is considered "present" when both identity and query coverage exceed the
+    supplied thresholds.
+
+    Parameters
+    ----------
+    fasta_query : str
+        Path to the short query sequence (FASTA, single record).
+    fasta_target : str
+        Path to the longer target sequence (FASTA, single record).
+    label_query : str, optional
+        Display name for the query. Defaults to the FASTA record ID.
+    label_target : str, optional
+        Display name for the target. Defaults to the FASTA record ID.
+    match_score : float
+        Score for a matching base (default 2.0).
+    mismatch_score : float
+        Penalty for a mismatched base (default -1.0).
+    gap_open : float
+        Gap-open penalty (default -10.0).
+    gap_extend : float
+        Gap-extension penalty per base (default -0.5).
+    min_identity : float
+        Minimum percent identity (0-100) to consider the query present
+        (default 90.0).
+    min_coverage : float
+        Minimum percent of the query that must be aligned (0-100) to
+        consider the query present (default 80.0).
+
+    Returns
+    -------
+    dict with keys:
+        "present"          : bool   - True when both thresholds are met
+        "score"            : float  - Raw alignment score
+        "identity_pct"     : float  - % identical bases in the aligned region
+        "coverage_pct"     : float  - % of query bases covered by the alignment
+        "target_start"     : int    - 1-based start position on the target
+        "target_end"       : int    - 1-based end position on the target (inclusive)
+        "query_start"      : int    - 1-based start position on the query
+        "query_end"        : int    - 1-based end position on the query (inclusive)
+        "n_matches"        : int
+        "n_mismatches"     : int
+        "n_gaps"           : int
+        "query_len"        : int    - Full length of the query sequence
+        "target_len"       : int    - Full length of the target sequence
+        "label_query"      : str
+        "label_target"     : str
+        "aligned_query"    : str    - Gapped query string from best alignment
+        "aligned_target"   : str    - Gapped target string from best alignment
+    """
+    rec_query  = SeqIO.read(fasta_query,  "fasta")
+    rec_target = SeqIO.read(fasta_target, "fasta")
+
+    seq_query  = str(rec_query.seq).upper()
+    seq_target = str(rec_target.seq).upper()
+
+    lbl_query  = label_query  or rec_query.id
+    lbl_target = label_target or rec_target.id
+
+    aligner = _build_aligner(match_score, mismatch_score, gap_open, gap_extend)
+
+    # _align_one expects (label, query_seq, ref_seq, aligner) — same convention
+    result = _align_one(lbl_query, seq_query, seq_target, aligner)
+
+    aligned_len  = result.n_matches + result.n_mismatches + result.n_gaps
+    identity_pct = 100.0 * result.n_matches / aligned_len if aligned_len else 0.0
+    coverage_pct = 100.0 * (result.query_end - result.query_start) / result.query_len \
+                   if result.query_len else 0.0
+
+    present = (identity_pct >= min_identity) and (coverage_pct >= min_coverage)
+
+    return {
+        "present":       present,
+        "score":         result.score,
+        "identity_pct":  round(identity_pct, 4),
+        "coverage_pct":  round(coverage_pct, 4),
+        "target_start":  result.ref_start + 1,   # convert to 1-based
+        "target_end":    result.ref_end,         # ref_end is already exclusive → last included base
+        "query_start":   result.query_start + 1,
+        "query_end":     result.query_end,
+        "n_matches":     result.n_matches,
+        "n_mismatches":  result.n_mismatches,
+        "n_gaps":        result.n_gaps,
+        "query_len":     result.query_len,
+        "target_len":    len(seq_target),
+        "label_query":   lbl_query,
+        "label_target":  lbl_target,
+        "aligned_query":  result.aligned_query,
+        "aligned_target": result.aligned_ref,
+    }
+
 def run_dual_alignment(
     fasta_a: str,
     fasta_b: str,

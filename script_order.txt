@@ -45,7 +45,7 @@ python cli_align_reads_to_anchors.py \
 # Activate conda
 conda activate gapwalker
 
-# 3. Get top reads by their alignment scores to the left anchor and define a new consensus
+# 3. Get top reads by their alignment scores to the left anchor
 python cli_get_top_align.py \
     -i ./output/3511_alignments \
     -n 10 \
