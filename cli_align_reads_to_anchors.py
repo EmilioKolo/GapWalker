@@ -23,7 +23,7 @@ def main():
 
     print("Starting the pipeline...")
     
-    ### Pipeline here
+    ###
 
     # Make sure output directory exists
     output_dir = Path(args.output_prefix.rsplit("/", 1)[0])

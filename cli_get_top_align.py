@@ -31,7 +31,7 @@ def main():
     output_dir = Path(args.output_prefix.rsplit("/", 1)[0])
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    ### Pipeline here
+    ###
 
     df_top_n = read_alignment_files(
         Path(args.input_folder),

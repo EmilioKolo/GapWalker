@@ -26,13 +26,11 @@ def main():
 
     print("Starting the pipeline...")
     
-    ### Pipeline here
+    ###
 
     # Make sure output directory exists
     output_dir = Path(args.output_prefix.rsplit("/", 1)[0])
     output_dir.mkdir(parents=True, exist_ok=True)
-
-    ## 1. Go through each of the reads
 
     # Define path to the list of reads that align to both anchors
     shared_reads_file:Path = Path(args.read_list)
