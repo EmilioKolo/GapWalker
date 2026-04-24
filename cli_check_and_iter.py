@@ -33,11 +33,28 @@ def main():
         min_coverage=95
     )
 
+    # Save results to a file
+    with open(f"{args.output_prefix}_check_results.txt", "w") as f:
+        f.write(f"Present: {result['present']}\n")
+        f.write(f"Score: {result['score']}\n")
+        f.write(f"Identity %: {result['identity_pct']}\n")
+        f.write(f"Coverage %: {result['coverage_pct']}\n")
+        f.write(f"Target start: {result['target_start']}\n")
+        f.write(f"Target end: {result['target_end']}\n")
+        f.write(f"Query start: {result['query_start']}\n")
+        f.write(f"Query end: {result['query_end']}\n")
+        f.write(f"Number of matches: {result['n_matches']}\n")
+        f.write(f"Number of mismatches: {result['n_mismatches']}\n")
+        f.write(f"Number of gaps: {result['n_gaps']}\n")
+        f.write(f"Query length: {result['query_len']}\n")
+        f.write(f"Target length: {result['target_len']}\n")
+
     # Check for identity and coverage over 95%
     if result["present"]:
         print("The iterated consensus sequence contains the other anchor. Stopping the pipeline and assembling the final sequence.")
         
-        ### ADD CODE TO ASSEMBLE THE FINAL SEQUENCE HERE ###
+        print("[ACTION NEEDED] Run cli_concatenate_evaluate.py with all the generated consensus sequences.")
+        ### RUN CODE TO ASSEMBLE THE FINAL SEQUENCE MANUALLY (for now) ###
         
         return
     # Check for identity and/or coverage over 90%

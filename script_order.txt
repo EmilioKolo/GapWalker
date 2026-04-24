@@ -1,3 +1,6 @@
+# 0. Activate conda
+conda activate gapwalker
+
 # 1. Align and extract reads that align to one or both anchors
 python cli_extract_reads.py \
     -1 ./data/anchorA.fasta \
@@ -41,9 +44,6 @@ python cli_align_reads_to_anchors.py \
     -2 ./data/anchorB.fasta \
     -i ./input/3569_anchor1.other.fastq \
     -o ./output/3569_alignments/read
-
-# Activate conda
-conda activate gapwalker
 
 # 3. Get top reads by their alignment scores to the left anchor
 python cli_get_top_align.py \
@@ -91,4 +91,50 @@ python cli_check_and_iter.py \
     -1 ./output/3569_iter1/3569_iter1_consensus_seq.fasta \
     -2 ./data/anchorB.fasta \
     -o ./output/3569_iter1/3569_iter1 \
+    -d right
+
+# 5. Re-run pipeline if it does not match
+python cli_extract_reads.py \
+    -1 ./output/3511_iter1/3511_iter1_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3511.fastq.gz \
+    -t 4 -o ./output/3511_iter2/3511
+python cli_align_reads_to_anchors.py \
+    -1 ./output/3511_iter1/3511_iter1_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./output/3511_iter2/3511_anchor1.other.fastq \
+    -o ./output/3511_iter2/alignments/read
+python cli_get_top_align.py \
+    -i ./output/3511_iter2/alignments \
+    -n 10 \
+    -o ./output/3511_iter2/3511_iter2 \
+    -m ./output/3511_iter2/alignments/read_read_id_mapping.csv \
+    -f ./data/runs_3511.fastq 
+python cli_check_and_iter.py \
+    -1 ./output/3511_iter2/3511_iter2_consensus_seq.fasta \
+    -2 ./data/anchorB.fasta \
+    -o ./output/3511_iter2/3511_iter2 \
+    -d right
+
+# Iter 3
+python cli_extract_reads.py \
+    -1 ./output/3511_iter2/3511_iter2_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3511.fastq.gz \
+    -t 4 -o ./output/3511_iter3/3511
+python cli_align_reads_to_anchors.py \
+    -1 ./output/3511_iter2/3511_iter2_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./output/3511_iter3/3511_anchor1.other.fastq \
+    -o ./output/3511_iter3/alignments/read
+python cli_get_top_align.py \
+    -i ./output/3511_iter3/alignments \
+    -n 10 \
+    -o ./output/3511_iter3/3511_iter3 \
+    -m ./output/3511_iter3/alignments/read_read_id_mapping.csv \
+    -f ./data/runs_3511.fastq 
+python cli_check_and_iter.py \
+    -1 ./output/3511_iter3/3511_iter3_consensus_seq.fasta \
+    -2 ./data/anchorB.fasta \
+    -o ./output/3511_iter3/3511_iter3 \
     -d right
