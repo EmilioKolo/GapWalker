@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 read_anchor_check.py
 
@@ -467,7 +469,7 @@ def _write_plot(
     return out_path
 
 
-# Entry point
+# Entry points
 
 def run_dual_alignment(
     fasta_a: str,

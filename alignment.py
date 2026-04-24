@@ -37,7 +37,7 @@ def extract_aligned_reads(bam_file, output_fastq, aln_len:int=1500):
 
     for read in bamfile.fetch():
         try:
-            ref_len = int(read.reference_length)
+            ref_len = int(str(read.reference_length))
         except TypeError:
             ref_len = 0
         # excluding soft-clipped bases but including gaps/introns
