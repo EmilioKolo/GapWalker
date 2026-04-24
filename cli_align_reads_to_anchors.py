@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import pandas as pd
 from pathlib import Path
 from read_anchor_check import run_dual_alignment
 
@@ -34,6 +35,8 @@ def main():
     START_CONT = 1
     read_cont = START_CONT
     cont = 0
+    # Start a dictionary to store read_cont to read_id mapping
+    read_id_dict = {}
     # Open the fastq file and go through IDs
     with Path(args.input_reads).open() as f:
         for line in f:
@@ -42,6 +45,7 @@ def main():
                 print(f"Read ID: {read_id}")
 
                 read_out_pref = f"{args.output_prefix}_{read_cont}"
+                read_id_dict[read_cont] = read_id
 
                 # Run alignment for this read against both anchors
                 _ = run_dual_alignment(
@@ -57,6 +61,11 @@ def main():
                 read_cont += 1
             elif cont % 4 != 0:
                 cont += 1
+    
+    # Save the read_id_dict as a csv file for later use
+    df_read_id = pd.DataFrame.from_dict(read_id_dict, orient='index', columns=['read_id'])
+    df_read_id.to_csv(f"{args.output_prefix}_read_id_mapping.csv", index_label='read_cont')
+    
     ###
 
     print('Pipeline finished!')

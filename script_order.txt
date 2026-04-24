@@ -41,3 +41,32 @@ python cli_align_reads_to_anchors.py \
     -2 ./data/anchorB.fasta \
     -i ./input/3569_anchor1.other.fastq \
     -o ./output/3569_alignments/read
+
+# Activate conda
+conda activate gapwalker
+
+# 3. Get top reads by their alignment scores to the left anchor
+python cli_get_top_align.py \
+    -i ./output/3511_alignments \
+    -n 10 \
+    -o ./output/3511_iter1/3511_iter1 \
+    -m ./output/3511_alignments/read_read_id_mapping.csv \
+    -f ./data/runs_3511.fastq 
+python cli_get_top_align.py \
+    -i ./output/3512_alignments \
+    -n 10 \
+    -o ./output/3512_iter1/3512_iter1 \
+    -m ./output/3512_alignments/read_read_id_mapping.csv \
+    -f ./data/runs_3512.fastq 
+python cli_get_top_align.py \
+    -i ./output/3567_alignments \
+    -n 10 \
+    -o ./output/3567_iter1/3567_iter1 \
+    -m ./output/3567_alignments/read_read_id_mapping.csv \
+    -f ./data/runs_3567.fastq 
+python cli_get_top_align.py \
+    -i ./output/3569_alignments \
+    -n 10 \
+    -o ./output/3569_iter1/3569_iter1 \
+    -m ./output/3569_alignments/read_read_id_mapping.csv \
+    -f ./data/runs_3569.fastq 
