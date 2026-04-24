@@ -13,8 +13,6 @@ def main():
                         help="Input fasta file with the iterated consensus sequence (output of cli_get_top_align.py).")
     parser.add_argument("-2", "--other-anchor-consensus", required=True,
                         help="Input fasta file with the other anchor consensus sequence.")
-    parser.add_argument("-f", "--fastq-file", required=True,
-                        help="Input fastq file with the sequenced reads.")
     parser.add_argument("-o", "--output-prefix", default="./output",
                         help="Output prefix. Assumes it's a folder if it ends with / (default: ./output)")
     parser.add_argument("-d", "--extension-direction", choices=['left', 'right'], default="right",
@@ -35,16 +33,14 @@ def main():
         min_coverage=95
     )
 
-    print(f"Presence check result: {result}")
-
-    # 2.A. If it does, stop the pipeline and assemble the final sequence
-    # Check for identity and/or coverage over 90%
+    # Check for identity and coverage over 95%
     if result["present"]:
         print("The iterated consensus sequence contains the other anchor. Stopping the pipeline and assembling the final sequence.")
         
         ### ADD CODE TO ASSEMBLE THE FINAL SEQUENCE HERE ###
         
         return
+    # Check for identity and/or coverage over 90%
     elif result["identity_pct"] >= 90 or result["coverage_pct"] >= 90:
         print("The iterated consensus sequence has high identity and/or coverage, but is below threshold.")
         print(result)
@@ -53,12 +49,16 @@ def main():
 
     # 2.B. If it doesn't, extract the 2kbp sequence from the extension side of the iterated consensus sequence
 
+    # Get the full new sequence from the iterated consensus fasta file
+    with open(args.iterated_consensus, "r") as f:
+        lines = f.readlines()
+        new_sequence = "".join(lines[1:]).replace("\n", "")
     # Extract the 2kbp sequence from the extension side of the iterated consensus sequence
     new_anchor = None
     if args.extension_direction == "right":
-        new_anchor = result["aligned_target"][-2000:]
+        new_anchor = new_sequence[-2000:]
     else:
-        new_anchor = result["aligned_target"][:2000]
+        new_anchor = new_sequence[:2000]
     
     # Save the new anchor sequence to a fasta file
     new_anchor_fasta = f"{args.output_prefix}_new_anchor.fasta"

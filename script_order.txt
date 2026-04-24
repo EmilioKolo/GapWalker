@@ -70,3 +70,25 @@ python cli_get_top_align.py \
     -o ./output/3569_iter1/3569_iter1 \
     -m ./output/3569_alignments/read_read_id_mapping.csv \
     -f ./data/runs_3569.fastq 
+
+# 4. Define a new consensus anchor and check if it matches the second anchor
+python cli_check_and_iter.py \
+    -1 ./output/3511_iter1/3511_iter1_consensus_seq.fasta \
+    -2 ./data/anchorB.fasta \
+    -o ./output/3511_iter1/3511_iter1 \
+    -d right
+python cli_check_and_iter.py \
+    -1 ./output/3512_iter1/3512_iter1_consensus_seq.fasta \
+    -2 ./data/anchorB.fasta \
+    -o ./output/3512_iter1/3512_iter1 \
+    -d right
+python cli_check_and_iter.py \
+    -1 ./output/3567_iter1/3567_iter1_consensus_seq.fasta \
+    -2 ./data/anchorB.fasta \
+    -o ./output/3567_iter1/3567_iter1 \
+    -d right
+python cli_check_and_iter.py \
+    -1 ./output/3569_iter1/3569_iter1_consensus_seq.fasta \
+    -2 ./data/anchorB.fasta \
+    -o ./output/3569_iter1/3569_iter1 \
+    -d right
