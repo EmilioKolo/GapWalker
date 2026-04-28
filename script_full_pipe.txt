@@ -1,0 +1,10 @@
+
+python cli_main.py run-all \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3511.fastq \
+    -o ./output/3511_full_pipeline \
+    -t 6 \
+    --max-iter 5 \
+    --top-n 20 \
+    -p left
