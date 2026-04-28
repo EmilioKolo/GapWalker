@@ -116,9 +116,9 @@ def run_mafft(sequences: list[SeqRecord]) -> list[str]:
     tmp_out = tmp_in + ".aln"
     cmd = [
         "mafft",
-        "--auto",           # auto strategy (FFT-NS or L-INS-i based on size)
+        "--auto",            # auto strategy (FFT-NS or L-INS-i based on size)
         "--adjustdirection", # handle rare reverse-complement edge cases
-        "--thread", "-1",   # use all cores
+        "--thread", "-1",    # use all cores
         tmp_in
     ]
     with open(tmp_out, "w") as out_fh:
@@ -369,7 +369,9 @@ def run_consensus_builder(
     else:
         print("  All columns had sufficient coverage throughout.")
 
-    print_coverage_plot(col_stats)
+    # Print and save a coverage plot
+    cov_plot_file = stats.replace(".tsv", "_coverage_plot.txt") if stats else None
+    print_coverage_plot(col_stats, output_file=cov_plot_file)
 
     # ── Save outputs ─────────────────────────────────────────────────────────
     print(f"\n[4/4] Saving outputs ...")
@@ -399,13 +401,32 @@ def run_consensus_builder(
 
 # ─── Reporting ───────────────────────────────────────────────────────────────
 
-def print_coverage_plot(stats: list[dict], width: int = 80):
-    """ASCII coverage plot across the consensus."""
+def print_coverage_plot(stats: list[dict], width: int = 80, output_file=None):
+    """
+    ASCII coverage plot across the consensus.
+    Also saves the figure to a text file if output_file is provided.
+    """
     coverages = [s["coverage"] for s in stats if s.get("base") not in (None,)]
     if not coverages:
         return
     max_cov = max(coverages)
     step = max(1, len(coverages) // width)
+    if output_file:
+        with open(output_file, "w") as f:
+            f.write("Coverage across consensus (ASCII plot):\n")
+            f.write(f"Max coverage: {max_cov}  Length: {len(coverages)} bp\n\n")
+            bar_height = 10
+            for row in range(bar_height, 0, -1):
+                threshold = (row / bar_height) * max_cov
+                line = ""
+                for i in range(0, len(coverages), step):
+                    chunk = coverages[i:i+step]
+                    avg = sum(chunk) / len(chunk)
+                    line += "█" if avg >= threshold else " "
+                label = f"{int(threshold):>4} |"
+                f.write(f"{label}{line}\n")
+            f.write(" " * 6 + "─" * (len(coverages) // step) + "\n")
+            f.write(f"      0{' ' * (len(coverages) // step - 10)}{len(coverages)} bp\n")
     print("\n  Coverage across consensus (ASCII plot):")
     print(f"  Max coverage: {max_cov}  Length: {len(coverages)} bp\n")
     bar_height = 10
