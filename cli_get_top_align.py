@@ -23,10 +23,18 @@ def main():
     parser.add_argument("-p", "--priority-anchor", choices=['left', 'right'], default="left",
                         help="Priority anchor for cutting the sequences (default: left). Must be either 'left' or 'right'.")
 
-    args = parser.parse_args()
+    args_main = parser.parse_args()
 
+    main_pipeline(args_main)
+
+    print('Pipeline finished!')
+
+
+def main_pipeline(args: argparse.Namespace):
+    """
+    For calling from other scripts, e.g. cli_main.py.
+    """
     print("Starting the pipeline for get_top_align...")
-
     # Make sure output directory exists
     output_dir = Path(args.output_prefix.rsplit("/", 1)[0])
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -72,8 +80,6 @@ def main():
         f.write(f">consensus_seq\n{consensus_seq}\n")
     
     ###
-
-    print('Pipeline finished!')
 
 
 if __name__ == "__main__":

@@ -24,12 +24,18 @@ def main():
     parser.add_argument("--skip-extract", action="store_true",
                         help="Add to skip read extraction step.")
 
-    args = parser.parse_args()
+    args_main = parser.parse_args()
 
+    main_pipeline(args_main)
+
+    print('Pipeline finished!')
+
+
+def main_pipeline(args: argparse.Namespace):
+    """
+    For calling from other scripts, e.g. cli_main.py.
+    """
     print("Starting the pipeline for extract_reads...")
-    
-    ###
-
     # Make sure output directory exists
     output_dir = Path(args.output_prefix.rsplit("/", 1)[0])
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -79,7 +85,7 @@ def main():
         f"{args.output_prefix}_shared_other.txt"
     )
 
-    print('Pipeline finished!')
+    ###
 
 
 if __name__ == "__main__":

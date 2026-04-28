@@ -20,12 +20,18 @@ def main():
     parser.add_argument("-t", "--threads", type=int, default=1, 
                         help="Number of threads to use for alignment (default: 1).")
 
-    args = parser.parse_args()
+    args_main = parser.parse_args()
 
+    main_pipeline(args_main)
+
+    print('Pipeline finished!')
+
+
+def main_pipeline(args: argparse.Namespace):
+    """
+    For calling from other scripts, e.g. cli_main.py.
+    """
     print("Starting the pipeline for concatenate_evaluate...")
-
-    ###
-
     # Open and concatenate the different consensus sequences (remove the last part of the last consensus seq)
     full_sequence:str = ''
     for idx, fasta_file in enumerate(args.consensus_sequences):
@@ -69,8 +75,6 @@ def main():
     )
 
     ###
-
-    print('Pipeline finished!')
 
 
 if __name__ == "__main__":
