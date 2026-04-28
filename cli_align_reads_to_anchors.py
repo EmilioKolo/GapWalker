@@ -39,16 +39,24 @@ def main_pipeline(args: argparse.Namespace):
 
     # Start counting reads from 1 for better readability
     START_CONT = 1
+    # Define frequency of printing progress updates
+    PRINTFREQ = 10
     read_cont = START_CONT
     cont = 0
     # Start a dictionary to store read_cont to read_id mapping
     read_id_dict = {}
+    # Open the fastq file to count total reads for progress monitoring
+    with Path(args.input_reads).open() as f:
+        total_lines = sum(1 for _ in f)
+    total_reads = total_lines // 4
     # Open the fastq file and go through IDs
     with Path(args.input_reads).open() as f:
         for line in f:
             if line.startswith('@') and cont % 4 == 0:
                 read_id = line.strip()[1:]
-                print(f"Read ID: {read_id}")
+                # Print every PRINTFREQ reads for progress monitoring
+                if read_cont % PRINTFREQ == 0 or read_cont == START_CONT:
+                    print(f"Read cont: {read_cont} out of {total_reads}")
 
                 read_out_pref = f"{args.output_prefix}_{read_cont}"
                 read_id_dict[read_cont] = read_id

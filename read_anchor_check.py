@@ -143,12 +143,14 @@ def _align_one(
     query_seq: str,
     ref_seq: str,
     aligner: Align.PairwiseAligner,
+    print_debug: bool = False,
 ) -> AlignmentResult:
     alignments:Align.PairwiseAlignments = aligner.align(ref_seq, query_seq)
     best = next(iter(alignments))
 
     # Print type of object for "best"
-    print(f"Best alignment type: {type(best)}")
+    if print_debug:
+        print(f"Best alignment type: {type(best)}")
 
     # Coordinates on reference (target) and query
     ref_coords = best.aligned[0]    # array of (start, end) blocks on ref
