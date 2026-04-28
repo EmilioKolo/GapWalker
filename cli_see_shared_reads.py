@@ -24,7 +24,7 @@ def main():
 
     args = parser.parse_args()
 
-    print("Starting the pipeline...")
+    print("Starting the pipeline for see_shared_reads...")
     
     ###
 

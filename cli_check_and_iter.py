@@ -20,7 +20,7 @@ def main():
 
     args = parser.parse_args()
 
-    print("Starting the pipeline...")
+    print("Starting the pipeline for check_and_iter...")
 
     ###
 

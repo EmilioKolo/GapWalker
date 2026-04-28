@@ -25,7 +25,7 @@ def main():
 
     args = parser.parse_args()
 
-    print("Starting the pipeline...")
+    print("Starting the pipeline for get_top_align...")
 
     # Make sure output directory exists
     output_dir = Path(args.output_prefix.rsplit("/", 1)[0])

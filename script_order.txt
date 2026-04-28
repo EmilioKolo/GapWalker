@@ -94,6 +94,8 @@ python cli_check_and_iter.py \
     -d right
 
 # 5. Re-run pipeline if it does not match
+
+## Iter 2
 python cli_extract_reads.py \
     -1 ./output/3511_iter1/3511_iter1_new_anchor.fasta \
     -2 ./data/anchorB.fasta \
@@ -116,7 +118,73 @@ python cli_check_and_iter.py \
     -o ./output/3511_iter2/3511_iter2 \
     -d right
 
-# Iter 3
+python cli_extract_reads.py \
+    -1 ./output/3512_iter1/3512_iter1_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3512.fastq.gz \
+    -t 4 -o ./output/3512_iter2/3512
+python cli_align_reads_to_anchors.py \
+    -1 ./output/3512_iter1/3512_iter1_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./output/3512_iter2/3512_anchor1.other.fastq \
+    -o ./output/3512_iter2/alignments/read
+python cli_get_top_align.py \
+    -i ./output/3512_iter2/alignments \
+    -n 10 \
+    -o ./output/3512_iter2/3512_iter2 \
+    -m ./output/3512_iter2/alignments/read_read_id_mapping.csv \
+    -f ./data/runs_3512.fastq 
+python cli_check_and_iter.py \
+    -1 ./output/3512_iter2/3512_iter2_consensus_seq.fasta \
+    -2 ./data/anchorB.fasta \
+    -o ./output/3512_iter2/3512_iter2 \
+    -d right
+
+python cli_extract_reads.py \
+    -1 ./output/3567_iter1/3567_iter1_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3567.fastq.gz \
+    -t 4 -o ./output/3567_iter2/3567
+python cli_align_reads_to_anchors.py \
+    -1 ./output/3567_iter1/3567_iter1_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./output/3567_iter2/3567_anchor1.other.fastq \
+    -o ./output/3567_iter2/alignments/read
+python cli_get_top_align.py \
+    -i ./output/3567_iter2/alignments \
+    -n 10 \
+    -o ./output/3567_iter2/3567_iter2 \
+    -m ./output/3567_iter2/alignments/read_read_id_mapping.csv \
+    -f ./data/runs_3567.fastq 
+python cli_check_and_iter.py \
+    -1 ./output/3567_iter2/3567_iter2_consensus_seq.fasta \
+    -2 ./data/anchorB.fasta \
+    -o ./output/3567_iter2/3567_iter2 \
+    -d right
+
+python cli_extract_reads.py \
+    -1 ./output/3569_iter1/3569_iter1_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3569.fastq.gz \
+    -t 4 -o ./output/3569_iter2/3569
+python cli_align_reads_to_anchors.py \
+    -1 ./output/3569_iter1/3569_iter1_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./output/3569_iter2/3569_anchor1.other.fastq \
+    -o ./output/3569_iter2/alignments/read
+python cli_get_top_align.py \
+    -i ./output/3569_iter2/alignments \
+    -n 10 \
+    -o ./output/3569_iter2/3569_iter2 \
+    -m ./output/3569_iter2/alignments/read_read_id_mapping.csv \
+    -f ./data/runs_3569.fastq 
+python cli_check_and_iter.py \
+    -1 ./output/3569_iter2/3569_iter2_consensus_seq.fasta \
+    -2 ./data/anchorB.fasta \
+    -o ./output/3569_iter2/3569_iter2 \
+    -d right
+
+## Iter 3
 python cli_extract_reads.py \
     -1 ./output/3511_iter2/3511_iter2_new_anchor.fasta \
     -2 ./data/anchorB.fasta \
@@ -137,4 +205,48 @@ python cli_check_and_iter.py \
     -1 ./output/3511_iter3/3511_iter3_consensus_seq.fasta \
     -2 ./data/anchorB.fasta \
     -o ./output/3511_iter3/3511_iter3 \
+    -d right
+
+python cli_extract_reads.py \
+    -1 ./output/3567_iter2/3567_iter2_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3567.fastq.gz \
+    -t 4 -o ./output/3567_iter3/3567
+python cli_align_reads_to_anchors.py \
+    -1 ./output/3567_iter2/3567_iter2_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./output/3567_iter3/3567_anchor1.other.fastq \
+    -o ./output/3567_iter3/alignments/read
+python cli_get_top_align.py \
+    -i ./output/3567_iter3/alignments \
+    -n 10 \
+    -o ./output/3567_iter3/3567_iter3 \
+    -m ./output/3567_iter3/alignments/read_read_id_mapping.csv \
+    -f ./data/runs_3567.fastq 
+python cli_check_and_iter.py \
+    -1 ./output/3567_iter3/3567_iter3_consensus_seq.fasta \
+    -2 ./data/anchorB.fasta \
+    -o ./output/3567_iter3/3567_iter3 \
+    -d right
+
+python cli_extract_reads.py \
+    -1 ./output/3569_iter2/3569_iter2_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3569.fastq.gz \
+    -t 4 -o ./output/3569_iter3/3569
+python cli_align_reads_to_anchors.py \
+    -1 ./output/3569_iter2/3569_iter2_new_anchor.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./output/3569_iter3/3569_anchor1.other.fastq \
+    -o ./output/3569_iter3/alignments/read
+python cli_get_top_align.py \
+    -i ./output/3569_iter3/alignments \
+    -n 10 \
+    -o ./output/3569_iter3/3569_iter3 \
+    -m ./output/3569_iter3/alignments/read_read_id_mapping.csv \
+    -f ./data/runs_3569.fastq 
+python cli_check_and_iter.py \
+    -1 ./output/3569_iter3/3569_iter3_consensus_seq.fasta \
+    -2 ./data/anchorB.fasta \
+    -o ./output/3569_iter3/3569_iter3 \
     -d right

@@ -21,7 +21,7 @@ def main():
 
     args = parser.parse_args()
 
-    print("Starting the pipeline...")
+    print("Starting the pipeline for align_reads_to_anchors...")
     
     ###
 
