@@ -17,6 +17,10 @@ def main():
                         help="Output prefix. Assumes it's a folder if it ends with / (default: ./output)")
     parser.add_argument("-d", "--extension-direction", choices=['left', 'right'], default="right",
                         help="Direction for extension of the iterated consensus sequence (default: right). Must be either 'left' or 'right'.")
+    parser.add_argument("--threshold-identity", type=float, default=98.0,
+                        help="Minimum identity percentage to consider the other anchor as present in the iterated consensus sequence (default: 98.0).")
+    parser.add_argument("--threshold-coverage", type=float, default=98.0,
+                        help="Minimum coverage percentage to consider the other anchor as present in the iterated consensus sequence (default: 98.0).")
 
     args_main = parser.parse_args()
 
@@ -46,8 +50,8 @@ def main_pipeline(args: argparse.Namespace):
     result = check_sequence_presence(
         fasta_target=args.iterated_consensus,
         fasta_query=args.other_anchor_consensus,
-        min_identity=95,
-        min_coverage=95
+        min_identity=args.threshold_identity,
+        min_coverage=args.threshold_coverage
     )
 
     # Save results to a file
@@ -66,11 +70,11 @@ def main_pipeline(args: argparse.Namespace):
         f.write(f"Query length: {result['query_len']}\n")
         f.write(f"Target length: {result['target_len']}\n")
 
-    # Check for identity and coverage over 95%
+    # Check for identity and coverage over threshold
     if result["present"]:
         return True
-    # Check for identity and/or coverage over 90%
-    elif result["identity_pct"] >= 90 or result["coverage_pct"] >= 90:
+    # Check for identity and/or coverage over threshold
+    elif result["identity_pct"] >= args.threshold_identity or result["coverage_pct"] >= args.threshold_coverage:
         print("The iterated consensus sequence has high identity and/or coverage, but is below threshold.")
         print(result)
     else:
