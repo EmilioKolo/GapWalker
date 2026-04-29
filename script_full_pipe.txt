@@ -5,6 +5,45 @@ python cli_main.py run-all \
     -i ./data/runs_3511.fastq \
     -o ./output/3511_full_pipeline \
     -t 6 \
-    --max-iter 5 \
+    --max-iter 10 \
     --top-n 20 \
+    -p left; \
+python cli_main.py run-all \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3512.fastq \
+    -o ./output/3512_full_pipeline \
+    -t 6 \
+    --max-iter 10 \
+    --top-n 20 \
+    -p left; \
+python cli_main.py run-all \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3567.fastq \
+    -o ./output/3567_full_pipeline \
+    -t 6 \
+    --max-iter 10 \
+    --top-n 20 \
+    -p left; \
+python cli_main.py run-all \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3569.fastq \
+    -o ./output/3569_full_pipeline \
+    -t 6 \
+    --max-iter 10 \
+    --top-n 20 \
+    -p left
+
+# Re-run 3512
+
+python cli_main.py run-all \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3512.fastq \
+    -o ./output/3512_full_pipeline \
+    -t 6 \
+    --max-iter 10 \
+    --top-n 10 \
     -p left
