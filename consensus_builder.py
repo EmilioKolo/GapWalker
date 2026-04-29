@@ -310,7 +310,8 @@ def run_consensus_builder(
     ----------
     input_file              : Path to input FASTA (reads trimmed past anchor)
     output_file             : Path to output FASTA for consensus
-    min_coverage            : Min reads covering a position to include it
+    min_coverage            : Minimum number of active reads (aligned and not yet ended)
+                              required to continue extension at a column
     min_base_fraction       : Min fraction for a base to be called (else IUPAC/N)
     gap_fraction_threshold  : Column gap fraction above which column is skipped
     no_mafft                : Force progressive pairwise MSA even if MAFFT available
@@ -407,7 +408,7 @@ def print_coverage_plot(stats: list[dict], width: int = 80, output_file=None):
     ASCII coverage plot across the consensus.
     Also saves the figure to a text file if output_file is provided.
     """
-    coverages = [s["coverage"] for s in stats if s.get("base") not in (None,)]
+    coverages = [s["coverage"] for s in stats if s.get("base") not in (None, "-")]
     if not coverages:
         return
     max_cov = max(coverages)
