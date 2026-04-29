@@ -50,8 +50,8 @@ def main_pipeline(args: argparse.Namespace):
     result = check_sequence_presence(
         fasta_target=args.iterated_consensus,
         fasta_query=args.other_anchor_consensus,
-        min_identity=args.threshold_identity,
-        min_coverage=args.threshold_coverage
+        min_identity=int(args.threshold_identity),
+        min_coverage=int(args.threshold_coverage)
     )
 
     # Save results to a file
