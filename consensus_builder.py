@@ -292,6 +292,7 @@ IUPAC_MAP = {
 def get_iupac(bases: list[str]) -> str:
     return IUPAC_MAP.get(frozenset(b.upper() for b in bases), "N")
 
+
 def run_consensus_builder(
     input_file: str,
     output_file: str,
