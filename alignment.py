@@ -35,10 +35,10 @@ def align_index_minimap2(
     subprocess.run(" ".join(cmd_index), shell=True, check=True)
     if coverage_plots:
         # Generate coverage statistics
-        coverage_file = bam_sorted.replace(".bam", "_coverage.txt")
+        coverage_file = bam_sorted.replace(".sorted.bam", "_coverage.txt")
         generate_coverage_stats(bam_sorted, coverage_file)
         # Plot coverage
-        coverage_plot_file = bam_sorted.replace(".bam", "_coverage_plot.png")
+        coverage_plot_file = bam_sorted.replace(".sorted.bam", "_coverage_plot.png")
         plot_coverage(coverage_file, coverage_plot_file)
 
 
@@ -135,16 +135,25 @@ def index_fasta(fasta_file):
     subprocess.run(" ".join(cmd), shell=True, check=True)
 
 
-def plot_coverage(coverage_file, output_file):
+def plot_coverage(coverage_file, output_file, max_coverage=None):
     """
     Plot coverage from the coverage file and save the figure.
     """
     # Load the data
     df = pd.read_csv(coverage_file, sep='\t', header=None, 
                      names=['chr', 'pos', 'depth'])
-    
+
     # Plot coverage
     plt.figure(figsize=(10, 5))
+
+    if max_coverage is not None:
+        # Define y max for plotting
+        df['depth'] = df['depth'].clip(upper=max_coverage)
+        # Add a horizontal line at the max coverage for visual reference
+        plt.axhline(y=max_coverage, color='r', linestyle='--', 
+                    label=f'Cap ({max_coverage})')
+        plt.legend()
+        plt.ylim(0, max_coverage)
     plt.plot(df['pos'], df['depth'], linewidth=0.5)
     plt.title('Read Depth Across Genome')
     plt.xlabel('Position')
