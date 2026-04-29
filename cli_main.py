@@ -290,6 +290,8 @@ def run_check_and_iter(args: argparse.Namespace, dry_run: bool = False) -> bool:
         other_anchor_consensus=args.other_anchor_consensus,
         output_prefix=args.output_prefix,
         extension_direction=args.extension_direction,
+        threshold_identity=args.threshold_identity,
+        threshold_coverage=args.threshold_coverage,
     )
     found = main4(main4_args)  # main4 should return True when anchor is found
     check_outputs_check_and_iter(args.output_prefix)
@@ -448,6 +450,8 @@ def run_all(args: argparse.Namespace) -> None:
             other_anchor_consensus=args.anchor2,
             output_prefix=step4_prefix,
             extension_direction=extension_direction,
+            threshold_identity=args.threshold_identity,
+            threshold_coverage=args.threshold_coverage,
         )
         try:
             anchor_found = run_check_and_iter(step4_args, dry_run=dry_run)
@@ -591,6 +595,14 @@ def build_parser() -> argparse.ArgumentParser:
         "-d", "--extension-direction", choices=["left", "right"], default="right",
         help="Direction to extend the consensus (default: right).",
     )
+    p4.add_argument(
+        "--threshold-identity", type=float, default=98.0,
+        help="Minimum identity percentage to consider the other anchor as present in the iterated consensus sequence (default: 98.0)."
+    )
+    p4.add_argument(
+        "--threshold-coverage", type=float, default=98.0,
+        help="Minimum coverage percentage to consider the other anchor as present in the iterated consensus sequence (default: 98.0)."
+    )
     p4.set_defaults(func=lambda a: run_check_and_iter(a, dry_run=a.dry_run))
 
     # ------------------------------------------------------------------
@@ -639,6 +651,14 @@ def build_parser() -> argparse.ArgumentParser:
         "-p", "--priority-anchor", choices=["left", "right"], default="left",
         help="Priority anchor for sequence cutting (default: left)."
              "Extension direction will be the opposite side automatically.",
+    )
+    pa.add_argument(
+        "--threshold-identity", type=float, default=98.0,
+        help="Minimum identity percentage to consider the other anchor as present in the iterated consensus sequence (default: 98.0)."
+    )
+    pa.add_argument(
+        "--threshold-coverage", type=float, default=98.0,
+        help="Minimum coverage percentage to consider the other anchor as present in the iterated consensus sequence (default: 98.0)."
     )
 
     pa.set_defaults(func=run_all)
