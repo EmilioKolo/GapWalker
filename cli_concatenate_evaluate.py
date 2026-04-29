@@ -35,11 +35,8 @@ def main_pipeline(args: argparse.Namespace):
     # Open and concatenate the different consensus sequences (remove the last part of the last consensus seq)
     full_sequence:str = ''
     for idx, fasta_file in enumerate(args.consensus_sequences):
-        # Count the number of sequences in the fasta file to determine the last sequence
-        with open(fasta_file, "r") as f:
-            n_seq = sum(1 for line in f if line.startswith(">"))
-        # Start a counter
-        cont = 0
+        # Start a string with the current sequence
+        curr_sequence:str = ''
         # Start a boolean to check id and sequence
         id_found = False
         with open(fasta_file, "r") as f:
@@ -50,14 +47,15 @@ def main_pipeline(args: argparse.Namespace):
                         id_found = True
                     else:
                         print(f"WARNING: Two successive sequence IDs found in {fasta_file}. Check the file format.")
-                elif id_found:
+                else:
                     id_found = False
-                    if cont < n_seq - 1:
-                        full_sequence += str(line.strip())
-                    elif cont == n_seq - 1:
-                        # Remove the last part of the last consensus sequence
-                        full_sequence += str(line.strip()[:args.final_pos])
-                    cont += 1
+                    curr_sequence += str(line.strip())
+        # Check if the current sequence is the last one
+        if idx < len(args.consensus_sequences) - 1:
+            full_sequence += curr_sequence
+        else:
+            # Remove the last part of the last consensus sequence
+            full_sequence += curr_sequence[:args.final_pos]
 
     # Save the full consensus sequence to a fasta file
     full_consensus_fasta = f"{args.output_prefix}_full_consensus.fasta"
