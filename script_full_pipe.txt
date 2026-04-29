@@ -47,3 +47,21 @@ python cli_main.py run-all \
     --max-iter 10 \
     --top-n 10 \
     -p left
+
+# Re-run coverage plots
+python cli_coverage_plot.py \
+    -i ./output/3511_full_pipeline/05-concatenate-evaluate/output_full_consensus.sorted_coverage.txt \
+    -o ./output/3511_full_pipeline/3511_consensus \
+    -m 600
+python cli_coverage_plot.py \
+    -i ./output/3512_full_pipeline/05-concatenate-evaluate/output_full_consensus.sorted_coverage.txt \
+    -o ./output/3512_full_pipeline/3512_consensus \
+    -m 600
+python cli_coverage_plot.py \
+    -i ./output/3567_full_pipeline/05-concatenate-evaluate/output_full_consensus.sorted_coverage.txt \
+    -o ./output/3567_full_pipeline/3567_consensus \
+    -m 600
+python cli_coverage_plot.py \
+    -i ./output/3569_full_pipeline/05-concatenate-evaluate/output_full_consensus.sorted_coverage.txt \
+    -o ./output/3569_full_pipeline/3569_consensus \
+    -m 600

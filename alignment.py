@@ -150,9 +150,7 @@ def plot_coverage(coverage_file, output_file, max_coverage=None):
         # Define y max for plotting
         df['depth'] = df['depth'].clip(upper=max_coverage)
         # Add a horizontal line at the max coverage for visual reference
-        plt.axhline(y=max_coverage, color='r', linestyle='--', 
-                    label=f'Cap ({max_coverage})')
-        plt.legend()
+        plt.axhline(y=max_coverage, color='r', linestyle='--')
         plt.ylim(0, max_coverage)
     plt.plot(df['pos'], df['depth'], linewidth=0.5)
     plt.title('Read Depth Across Genome')

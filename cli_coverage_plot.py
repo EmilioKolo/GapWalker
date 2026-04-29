@@ -42,8 +42,6 @@ def main_pipeline(args: argparse.Namespace):
 
     ###
 
-    print('Pipeline finished!')
-
 
 if __name__ == "__main__":
     main()
