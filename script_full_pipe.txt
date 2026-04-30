@@ -65,3 +65,49 @@ python cli_coverage_plot.py \
     -i ./output/3569_full_pipeline/05-concatenate-evaluate/output_full_consensus.sorted_coverage.txt \
     -o ./output/3569_full_pipeline/3569_consensus \
     -m 600
+
+# Full run strict thresholds
+python cli_main.py run-all \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3511.fastq \
+    -o ./output/3511_full_pipeline_99 \
+    -t 6 \
+    --max-iter 20 \
+    --top-n 10 \
+    -p left \
+    --threshold-identity 99 \
+    --threshold-coverage 99; \
+python cli_main.py run-all \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3512.fastq \
+    -o ./output/3512_full_pipeline_99 \
+    -t 6 \
+    --max-iter 20 \
+    --top-n 10 \
+    -p left \
+    --threshold-identity 99 \
+    --threshold-coverage 99; \
+python cli_main.py run-all \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3567.fastq \
+    -o ./output/3567_full_pipeline_99 \
+    -t 6 \
+    --max-iter 20 \
+    --top-n 10 \
+    -p left \
+    --threshold-identity 99 \
+    --threshold-coverage 99; \
+python cli_main.py run-all \
+    -1 ./data/anchorA.fasta \
+    -2 ./data/anchorB.fasta \
+    -i ./data/runs_3569.fastq \
+    -o ./output/3569_full_pipeline_99 \
+    -t 6 \
+    --max-iter 20 \
+    --top-n 10 \
+    -p left \
+    --threshold-identity 99 \
+    --threshold-coverage 99
